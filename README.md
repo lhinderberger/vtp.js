@@ -7,6 +7,20 @@ TODO
 ## Usage
 TODO
 
+## Running the unit tests
+To run the unit tests, use
+
+```bash
+npm test
+```
+
+When opening the project in an IDE, you might have to adjust your Jest test plugin to
+use the `npm test` command, as it currently supplies additional parameters to node
+for being able to test ES6 modules.
+
+Once full ES6 Module support is available and enabled in Node by default, that should
+no longer be necessary.
+
 ## Building the Documentation
 You can generate the API documentation for the JavaScript interface using the JSDoc tool
 and the `jsdoc-conf.json` file at the root of the source tree.
