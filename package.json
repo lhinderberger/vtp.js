@@ -4,10 +4,17 @@
   "description": "A port of libvtp to JavaScript",
   "author": "Lucas Hinderberger",
   "license": "Apache-2.0",
-  "keywords": ["vtp", "libvtp", "vibrotactile"],
+  "keywords": [
+    "vtp",
+    "libvtp",
+    "vibrotactile"
+  ],
   "repository": "https://github.com/lhinderberger/vtp.js",
   "bugs": {
     "email": "mail@lhinderberger.com",
     "url": "https://github.com/lhinderberger/vtp.js/issues"
+  },
+  "devDependencies": {
+    "webpack": "^5.10.0"
   }
 }

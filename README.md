@@ -7,6 +7,22 @@ TODO
 ## Usage
 TODO
 
+## Building the Documentation
+You can generate the API documentation for the JavaScript interface using the JSDoc tool
+and the `jsdoc-conf.json` file at the root of the source tree.
+
+Simply run
+
+```bash
+jsdoc -c jsdoc-config.json
+```
+
+and the API documentation for the JavaScript interface should appear in `build/doc`.
+
+**Warning:** Please note that the generated documentation will contain parts of
+whatever template you choose (or what is set up by default in your JSDoc tool),
+thus additional licensing terms may apply to the generated documentation files.
+
 ## Copyright
 vtp.js is (C) 2020 Lucas Hinderberger
 
