@@ -34,7 +34,7 @@ export function decodeInstruction(instruction) {
  * @param {Instruction} instruction The instruction to be encoded
  * @returns {Number} The VTP binary representation of the given Instruction
  */
-function encodeInstruction(instruction) {
+export function encodeInstruction(instruction) {
   throw "Not implemented!"
 }
 
@@ -45,6 +45,6 @@ function encodeInstruction(instruction) {
  * @param {Instruction} instruction  The instruction of which the time offset shall be calculated
  * @returns {Number} The instruction's time offset in milliseconds. If the instruction doesn't support an offset, this returns 0.
  */
-function getTimeOffset(instruction) {
+export function getTimeOffset(instruction) {
   throw "Not implemented!"
 }
