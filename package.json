@@ -14,11 +14,18 @@
     "email": "mail@lhinderberger.com",
     "url": "https://github.com/lhinderberger/vtp.js/issues"
   },
+  
   "devDependencies": {
     "jest": "^26.6.3",
-    "webpack": "^5.10.0"
+    "webpack": "^5.10.0",
+    "webpack-cli": "^4.2.0"
   },
+
+  "type": "module",
+  "main": "src/index.js",
+
   "scripts": {
+    "build": "npx webpack",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   }
 }

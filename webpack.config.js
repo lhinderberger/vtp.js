@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+const path = require('path')
+
 module.exports = {
-  entry: 'src/index.js',
+  entry: './src/index.js',
   output: {
-    path: 'dist',
+    path: path.resolve(__dirname, 'build'),
     filename: 'vtp.js',
     library: 'VTP',
     libraryTarget: 'umd'

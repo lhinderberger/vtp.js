@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-test.todo('increment time can be decoded')
+import * as VTP from '../src/index.js'
+
+test('increment time can be decoded', () => {
+  const encoded = 0x056789AB
+  const decoded = VTP.decodeInstruction(encoded)
+
+  expect(decoded).toBe({ type: "IncrementTime", timeOffset: 0x56789AB })
+})
+
 test.todo('increment time can be encoded')
 test.todo('set amplitude can be decoded')
 test.todo('set amplitude can be encoded')
