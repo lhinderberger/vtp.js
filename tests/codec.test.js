@@ -16,18 +16,43 @@
 
 import * as VTP from '../src/index.js'
 
-test('increment time can be decoded', () => {
-  const encoded = 0x056789AB
-  const decoded = VTP.decodeInstruction(encoded)
+function testCodec(encodedInstruction, instruction) {
+  const decoded = VTP.decodeInstruction(encodedInstruction)
+  expect(decoded).toBe(instruction)
 
-  expect(decoded).toBe({ type: "IncrementTime", timeOffset: 0x56789AB })
+  const encoded = VTP.encodeInstruction(instruction)
+  expect(encoded).toBe(encodedInstruction)
+}
+
+
+test('increment time can be en/decoded', () => {
+  testCodec(0x056789AB, { type: "IncrementTime", timeOffset: 0x56789AB })
+  testCodec(0x0CCCCCCD, { type: "IncrementTime", timeOffset: 0xCCCCCCD })
 })
 
-test.todo('increment time can be encoded')
-test.todo('set amplitude can be decoded')
-test.todo('set amplitude can be encoded')
-test.todo('set frequency can be decoded')
-test.todo('set frequency can be encoded')
-test.todo('invalid instruction code yields error')
-test.todo('array can be decoded')
-test.todo('array can be encoded')
+
+test('set amplitude can be en/decoded', () => {
+  testCodec(0x2AACCD6B, {
+    type: "SetAmplitude",
+    channelSelect: 0xAA,
+    timeOffset: 0x333,
+    amplitude: 0x16B
+  })
+})
+
+test('set frequency can be en/decoded', () => {
+  testCodec(0x1AC56BBA, {
+    type: "SetFrequency",
+    channelSelect: 0xAC,
+    timeOffset: 0x15A,
+    amplitude: 0x3BA
+  })
+})
+
+test('invalid instruction code yields error', () => {
+  const invalidInstructionWord = 0xFE000000;
+  const invalidInstruction = { "type": "foo" }
+
+  expect(VTP.encodeInstruction(invalidInstruction)).toThrow()
+  expect(VTP.decodeInstruction(invalidInstructionWord)).toThrow()
+})
