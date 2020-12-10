@@ -15,6 +15,7 @@
  */
 
 import * as VTP from '../src/index.js'
+import { createAccumulator } from '../src/index.js'
 
 /*
  * Corresponding VTP Assembly Code:
@@ -148,4 +149,20 @@ test('fold with no instructions does nothing', () => {
     ],
     millisecondsElapsed: 0
   })
+})
+
+test('fold with out-of-range channel yields error', () => {
+  let accumulator = createAccumulator(3);
+
+  try {
+    VTP.foldSingle(accumulator, {
+      type: "SetAmplitude", 
+      channelSelect: 23,
+      timeOffset: 0,
+      amplitude: 123
+    })
+  }
+  catch(err) {
+    expect(err).toMatchObject({ code: VTP.ErrorCode.CHANNEL_OUT_OF_RANGE, message: expect.stringMatching(/.+/) })
+  }
 })

@@ -53,6 +53,17 @@ test('invalid instruction code yields error', () => {
   const invalidInstructionWord = 0xFE000000;
   const invalidInstruction = { "type": "foo" }
 
-  expect(VTP.encodeInstruction(invalidInstruction)).toThrow()
-  expect(VTP.decodeInstruction(invalidInstructionWord)).toThrow()
+  try {
+    VTP.encodeInstruction(invalidInstruction)
+  }
+  catch(err) {
+    expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_INSTRUCTION_CODE, message: expect.stringMatching(/.+/) })
+  }
+
+  try {
+    VTP.decodeInstruction(invalidInstructionWord)
+  }
+  catch(err) {
+    expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_INSTRUCTION_CODE, message: expect.stringMatching(/.+/) })
+  }
 })

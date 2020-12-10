@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
-export * from './codec.js'
-export * from './error.js'
-export * from './fold.js'
+export const ErrorCode = {
+  CHANNEL_OUT_OF_RANGE: 1,
+  INVALID_INSTRUCTION_CODE: 2
+}
