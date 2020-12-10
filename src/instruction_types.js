@@ -39,3 +39,9 @@
  * @property {Number} timeOffset
  * @property {Number} frequency
  */
+
+export const InstructionCode = {
+  INCREMENT_TIME: 0,
+  SET_FREQUENCY: 1,
+  SET_AMPLITUDE: 2
+}

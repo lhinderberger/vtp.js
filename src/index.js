@@ -17,3 +17,4 @@
 export * from './codec.js'
 export * from './error.js'
 export * from './fold.js'
+export * from './instruction_types.js'

@@ -18,10 +18,10 @@ import * as VTP from '../src/index.js'
 
 function testCodec(encodedInstruction, instruction) {
   const decoded = VTP.decodeInstruction(encodedInstruction)
-  expect(decoded).toBe(instruction)
+  expect(decoded).toStrictEqual(instruction)
 
   const encoded = VTP.encodeInstruction(instruction)
-  expect(encoded).toBe(encodedInstruction)
+  expect(encoded).toStrictEqual(encodedInstruction)
 }
 
 
@@ -45,25 +45,28 @@ test('set frequency can be en/decoded', () => {
     type: "SetFrequency",
     channelSelect: 0xAC,
     timeOffset: 0x15A,
-    amplitude: 0x3BA
+    frequency: 0x3BA
   })
 })
 
 test('invalid instruction code yields error', () => {
   const invalidInstructionWord = 0xFE000000;
+  
+  try {
+    VTP.decodeInstruction(invalidInstructionWord)
+  }
+  catch(err) {
+    expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_INSTRUCTION_CODE, message: expect.stringMatching(/.+/) })
+  }
+})
+
+test('encoding invalid instruction type yields error', () => {
   const invalidInstruction = { "type": "foo" }
 
   try {
     VTP.encodeInstruction(invalidInstruction)
   }
   catch(err) {
-    expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_INSTRUCTION_CODE, message: expect.stringMatching(/.+/) })
-  }
-
-  try {
-    VTP.decodeInstruction(invalidInstructionWord)
-  }
-  catch(err) {
-    expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_INSTRUCTION_CODE, message: expect.stringMatching(/.+/) })
+    expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_INSTRUCTION_TYPE, message: expect.stringMatching(/.+/) })
   }
 })

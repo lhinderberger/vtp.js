@@ -43,7 +43,7 @@ test('fold yields expected accumulation', () => {
 
   VTP.fold(accumulator, testdataInstructions)
 
-  expect(accumulator).toBe({
+  expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 234, frequency: 789 },
       { amplitude: 234, frequency: 567 },
@@ -57,8 +57,8 @@ test('foldUntil stops at the right time', () => {
   let accumulator = VTP.createAccumulator(3)
 
   let nProcessed = VTP.foldUntil(accumulator, testdataInstructions, 0)
-  expect(nProcessed).toBe(3)
-  expect(accumulator).toBe({
+  expect(nProcessed).toStrictEqual(3)
+  expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 123, frequency: 234 },
       { amplitude: 123, frequency: 234 },
@@ -68,8 +68,8 @@ test('foldUntil stops at the right time', () => {
   })
 
   nProcessed = VTP.foldUntil(accumulator, testdataInstructions.slice(3), 10)
-  expect(nProcessed).toBe(0)
-  expect(accumulator).toBe({
+  expect(nProcessed).toStrictEqual(0)
+  expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 123, frequency: 234 },
       { amplitude: 123, frequency: 234 },
@@ -79,8 +79,8 @@ test('foldUntil stops at the right time', () => {
   })
 
   nProcessed = VTP.foldUntil(accumulator, testdataInstructions.slice(3), 50)
-  expect(nProcessed).toBe(2)
-  expect(accumulator).toBe({
+  expect(nProcessed).toStrictEqual(2)
+  expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 123, frequency: 789 },
       { amplitude: 123, frequency: 456 },
@@ -90,8 +90,8 @@ test('foldUntil stops at the right time', () => {
   })
 
   nProcessed = VTP.foldUntil(accumulator, testdataInstructions.slice(5), 2050)
-  expect(nProcessed).toBe(3)
-  expect(accumulator).toBe({
+  expect(nProcessed).toStrictEqual(3)
+  expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 234, frequency: 789 },
       { amplitude: 234, frequency: 567 },
@@ -101,8 +101,8 @@ test('foldUntil stops at the right time', () => {
   })
 
   nProcessed = VTP.foldUntil(accumulator, testdataInstructions.slice(8), 231195)
-  expect(nProcessed).toBe(0)
-  expect(accumulator).toBe({
+  expect(nProcessed).toStrictEqual(0)
+  expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 234, frequency: 789 },
       { amplitude: 234, frequency: 567 },
@@ -119,7 +119,7 @@ test('foldUntil past does nothing', () => {
   VTP.foldUntil(accumulator, testdataInstructions, 50)
   VTP.foldUntil(accumulator, testdataInstructions, 5)
 
-  expect(accumulator).toBe({
+  expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 123, frequency: 789 },
       { amplitude: 123, frequency: 456 },
@@ -141,7 +141,7 @@ test('fold with no instructions does nothing', () => {
 
   VTP.fold(accumulator, [])
 
-  expect(accumulator).toBe({
+  expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 2311, frequency: 1995 },
       { amplitude: 2311, frequency: 1995 },

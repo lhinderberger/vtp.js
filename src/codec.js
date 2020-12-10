@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import './instruction_types.js'
+import { ErrorCode } from './error.js'
+import { InstructionCode } from './instruction_types.js'
 
 
 /**
@@ -24,7 +25,18 @@ import './instruction_types.js'
  * @returns {Instruction} An object describing the decoded VTP instruction
  */
 export function decodeInstruction(instruction) {
-  throw "Not implemented!"
+  const code = (instruction & 0xF0000000) >> 28
+
+  switch (code) {
+    case InstructionCode.INCREMENT_TIME:
+      return { type: "IncrementTime", ...decodeParamsA(instruction, "timeOffset") }
+    case InstructionCode.SET_AMPLITUDE:
+      return { type: "SetAmplitude", ...decodeParamsB(instruction, "amplitude") }
+    case InstructionCode.SET_FREQUENCY:
+      return { type: "SetFrequency", ...decodeParamsB(instruction, "frequency") }
+    default:
+      throw { code: ErrorCode.INVALID_INSTRUCTION_CODE, message: "Invalid instruction code: " + code }
+  }
 }
 
 
@@ -35,7 +47,20 @@ export function decodeInstruction(instruction) {
  * @returns {Number} The VTP binary representation of the given Instruction
  */
 export function encodeInstruction(instruction) {
-  throw "Not implemented!"
+  const code = instructionTypeToCode(instruction.type)
+
+  let result = code << 28
+
+  if (code == InstructionCode.INCREMENT_TIME)
+    result |= encodeParamsA(instruction, "timeOffset")
+  else if (code == InstructionCode.SET_AMPLITUDE)
+    result |= encodeParamsB(instruction, "amplitude")
+  else if (code == InstructionCode.SET_FREQUENCY)
+    result |= encodeParamsB(instruction, "frequency")
+  else
+    throw "This should not be reachable"
+
+  return result
 }
 
 
@@ -47,4 +72,49 @@ export function encodeInstruction(instruction) {
  */
 export function getTimeOffset(instruction) {
   throw "Not implemented!"
+}
+
+
+function decodeParamsA(instruction, parameterAName) {
+  let result = {}
+
+  result[parameterAName] = instruction & 0x0FFFFFFF;
+
+  return result;
+}
+
+function decodeParamsB(instruction, parameterAName) {
+  let result = {
+    channelSelect: (instruction & 0x0FF00000) >> 20,
+    timeOffset: (instruction & 0x000FFC00) >> 10
+  }
+
+  result[parameterAName] = instruction & 0x000003FF;
+  
+  return result;
+}
+
+function encodeParamsA(instruction, parameterAName) {
+  return instruction[parameterAName] & 0x0FFFFFFF
+}
+
+function encodeParamsB(instruction, parameterAName) {
+  return (
+    ((instruction.channelSelect & 0xFF) << 20) |
+    ((instruction.timeOffset & 0x3FF) << 10) |
+    (instruction[parameterAName] & 0x3FF)
+  )
+}
+
+function instructionTypeToCode(instructionType) {
+  switch (instructionType) {
+    case "IncrementTime":
+      return InstructionCode.INCREMENT_TIME
+    case "SetAmplitude":
+      return InstructionCode.SET_AMPLITUDE
+    case "SetFrequency":
+      return InstructionCode.SET_FREQUENCY
+    default:
+      throw { code: ErrorCode.INVALID_INSTRUCTION_TYPE, message: "Invalid instruction type: " + instructionType }
+  }
 }
