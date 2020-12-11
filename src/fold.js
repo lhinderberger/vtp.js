@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ErrorCode } from './error.js'
 import './instruction_types.js'
 
 
@@ -45,7 +46,10 @@ import './instruction_types.js'
  * @returns {Accumulator}
  */
 export function createAccumulator(nChannels) {
-  throw "Not implemented!"
+  return {
+    channels: createChannels(nChannels),
+    millisecondsElapsed: 0
+  }
 }
 
 
@@ -58,7 +62,7 @@ export function createAccumulator(nChannels) {
  * @param {Instruction[]} instructions 
  */
 export function fold(accumulator, instructions) {
-  throw "Not implemented!"
+  instructions.map(instruction => foldSingle(accumulator, instruction))
 }
 
 
@@ -71,7 +75,20 @@ export function fold(accumulator, instructions) {
  * @param {Instruction} instruction 
  */
 export function foldSingle(accumulator, instruction) {
-  throw "Not implemented!"
+  if (instruction.type == "IncrementTime") {
+    // millisecondsElapsed will be incremented below this if/else block
+  }
+  else if (instruction.type == "SetAmplitude") {
+    setWithChannelSelect(accumulator, instruction, "amplitude")
+  }
+  else if (instruction.type == "SetFrequency") {
+    setWithChannelSelect(accumulator, instruction, "frequency")
+  }
+  else {
+    throw { code: ErrorCode.INVALID_INSTRUCTION_TYPE, message: "Invalid instruction type: " + instruction.type }
+  }
+
+  accumulator.millisecondsElapsed += instruction.timeOffset
 }
 
 
@@ -93,5 +110,35 @@ export function foldSingle(accumulator, instruction) {
  * @returns {Number} The number of instructions that were applied to the accumulator
  */
 export function foldUntil(accumulator, instructions, untilMs) {
-  throw "Not implemented!"
+  let nProcessed = 0
+
+  while (nProcessed < instructions.length && (accumulator.millisecondsElapsed + instructions[nProcessed].timeOffset) <= untilMs) {
+    foldSingle(accumulator, instructions[nProcessed])
+    nProcessed++
+  }
+
+  return nProcessed
+}
+
+
+function createChannels(nChannels) {
+  let result = []
+
+  for (let i=0; i < nChannels; i++) {
+    result.push({ amplitude: 0, frequency: 0 })
+  }
+
+  return result
+}
+
+function setWithChannelSelect(accumulator, instruction, parameterName) {
+  if (instruction.channelSelect == 0) {
+    accumulator.channels.map(c => c[parameterName] = instruction[parameterName])
+  }
+  else {
+    if (instruction.channelSelect > accumulator.channels.length)
+      throw { code: ErrorCode.CHANNEL_OUT_OF_RANGE, message: "Channel out of range: " + instruction.channelSelect }
+    
+    accumulator.channels[instruction.channelSelect - 1][parameterName] = instruction[parameterName]
+  }
 }

@@ -64,17 +64,6 @@ export function encodeInstruction(instruction) {
 }
 
 
-/**
- * Calculates the time offset of a given VTP instruction
- * 
- * @param {Instruction} instruction  The instruction of which the time offset shall be calculated
- * @returns {Number} The instruction's time offset in milliseconds. If the instruction doesn't support an offset, this returns 0.
- */
-export function getTimeOffset(instruction) {
-  throw "Not implemented!"
-}
-
-
 function decodeParamsA(instruction, parameterAName) {
   let result = {}
 

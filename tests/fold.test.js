@@ -38,6 +38,18 @@ const testdataWords = [
 
 const testdataInstructions = testdataWords.map(VTP.decodeInstruction)
 
+test('createAccumulator creates proper size accumulator', () => {
+  let accumulator = VTP.createAccumulator(4)
+
+  expect(accumulator).toStrictEqual({
+    channels: [
+      { amplitude: 0, frequency: 0 }, { amplitude: 0, frequency: 0 },
+      { amplitude: 0, frequency: 0 }, { amplitude: 0, frequency: 0 }
+    ],
+    millisecondsElapsed: 0
+  })
+})
+
 test('fold yields expected accumulation', () => {
   let accumulator = VTP.createAccumulator(3)
 
@@ -61,7 +73,7 @@ test('foldUntil stops at the right time', () => {
   expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 123, frequency: 234 },
-      { amplitude: 123, frequency: 234 },
+      { amplitude: 123, frequency: 345 },
       { amplitude: 123, frequency: 234 }
     ],
     millisecondsElapsed: 0
@@ -72,7 +84,7 @@ test('foldUntil stops at the right time', () => {
   expect(accumulator).toStrictEqual({
     channels: [
       { amplitude: 123, frequency: 234 },
-      { amplitude: 123, frequency: 234 },
+      { amplitude: 123, frequency: 345 },
       { amplitude: 123, frequency: 234 }
     ],
     millisecondsElapsed: 0
@@ -127,6 +139,22 @@ test('foldUntil past does nothing', () => {
     ],
     millisecondsElapsed: 50
   })
+})
+
+test('fold with invalid instruction type yields error', () => {
+  let accumulator = createAccumulator(3);
+
+  try {
+    VTP.foldSingle(accumulator, {
+      type: "FooBar", 
+      channelSelect: 0,
+      timeOffset: 0,
+      amplitude: 123
+    })
+  }
+  catch(err) {
+    expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_INSTRUCTION_TYPE, message: expect.stringMatching(/.+/) })
+  }
 })
 
 test('fold with no instructions does nothing', () => {
