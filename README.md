@@ -40,7 +40,8 @@ npm install --save vtp.js
 
 Please note that the vtp.js NPM module is an ES6 module, so this will require
 either transpilation or a modern Node.js runtime with support for ES6 modules
-enabled.
+enabled. As an alternative, you can use the UMD variant `dist/vtp.cjs` which is
+also part of the NPM package.
 
 If you're using a development stack that's based on webpack and babel, like
 for example vue-cli, this is the version for you.
