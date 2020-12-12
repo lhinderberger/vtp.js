@@ -1,6 +1,6 @@
 # Release Log of vtp.js
 
-## In Development: v0.3.0 - 2020-12-12
+## v0.3.0 - 2020-12-12
 ### Summary
 This is the initial release of vtp.js.
 
