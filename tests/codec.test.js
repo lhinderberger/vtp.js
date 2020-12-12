@@ -70,3 +70,32 @@ test('encoding invalid instruction type yields error', () => {
     expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_INSTRUCTION_TYPE, message: expect.stringMatching(/.+/) })
   }
 })
+
+test('instruction words can be read/written to/from bytes', () => {
+  const fileContents = new Uint8Array([
+    0x10, 0x00, 0x00, 0xEA, 0x20, 0x00, 0x00, 0x7B, 0x10, 0x20, 0x01, 0x59,
+    0x10, 0x20, 0xC9, 0xC8, 0x10, 0x10, 0x03, 0x15, 0x00, 0x00, 0x07, 0xD0,
+    0x20, 0x00, 0x00, 0xEA, 0x10, 0x20, 0x02, 0x37
+  ])
+
+  const fileContentsWords = [
+    0x100000ea, 0x2000007b, 0x10200159, 0x1020c9c8,
+    0x10100315, 0x000007d0, 0x200000ea, 0x10200237
+  ]
+
+
+  const wordsRead = VTP.readInstructionWords(fileContents.buffer)
+  const bytesWritten = VTP.writeInstructionWords(fileContentsWords)
+
+  expect(wordsRead).toStrictEqual(fileContentsWords)
+  expect(new Uint8Array(bytesWritten)).toStrictEqual(fileContents)
+})
+
+test('readInstructionWords detects incorrectly sized buffer', () => {
+  try {
+    VTP.readInstructionWords(new ArrayBuffer(7))
+  }
+  catch(err) {
+    expect(err).toMatchObject({ code: VTP.ErrorCode.INVALID_BUFFER_LENGTH, message: expect.stringMatching(/.+/) })
+  }
+})

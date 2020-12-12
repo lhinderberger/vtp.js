@@ -39,7 +39,6 @@ export function decodeInstruction(instruction) {
   }
 }
 
-
 /**
  * Encodes an Instruction object into its VTP binary representation
  *
@@ -61,6 +60,48 @@ export function encodeInstruction(instruction) {
     throw "This should not be reachable"
 
   return result
+}
+
+/**
+ * Reads VTP Binary instruction words from an ArrayBuffer
+ * 
+ * @param {ArrayBuffer} buffer An ArrayBuffer containing VTP Binary instruction words, as big endian
+ * @returns {Number[]} The instruction words represented by the given buffer
+ */
+export function readInstructionWords(buffer) {
+  if (buffer.byteLength % 4 != 0)
+    throw { code: ErrorCode.INVALID_BUFFER_LENGTH, message: "buffer length must be a multiple of 4 bytes" }
+  
+  const nInstructionWords = buffer.byteLength / 4
+  const view = new DataView(buffer)
+
+  let result = Array(nInstructionWords)
+  for (let i=0; i < nInstructionWords; i++) {
+    result[i] = view.getUint32(i*4, false) // VTP pattern files are big-endian
+  }
+
+  return result
+}
+
+/**
+ * Writes VTP instruction words to an ArrayBuffer
+ * 
+ * @param {Number[]} instructions The VTP instruction words to be written
+ * @returns {ArrayBuffer} An ArrayBuffer containing the binary representations of the given instructions, as big endian
+ */
+export function writeInstructionWords(instructionWords) {
+  let result = new Uint8Array(instructionWords.length * 4)
+
+  for (let i=0; i < instructionWords.length; i++) {
+    const instruction = instructionWords[i]
+
+    result[i*4]   = (instruction >> 24) & 0xFF
+    result[i*4+1] = (instruction >> 16) & 0xFF
+    result[i*4+2] = (instruction >> 8) & 0xFF
+    result[i*4+3] = instruction & 0xFF
+  }
+
+  return result.buffer
 }
 
 
