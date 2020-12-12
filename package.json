@@ -17,13 +17,12 @@
   "devDependencies": {
     "expect.js": "^0.3.1",
     "mocha": "^8.2.1",
-    "webpack": "^5.10.0",
-    "webpack-cli": "^4.2.0"
+    "rollup": "^2.34.2"
   },
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "build": "npx webpack",
+    "build": "rollup src/index.js --file dist/vtp.js --format umd --name VTP && cp dist/vtp.js dist/vtp.cjs",
     "test": "mocha",
     "prepack": "npm run build"
   }
