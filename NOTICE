@@ -5,7 +5,8 @@ the Apache License v2.0
 
 
 
-vtp.js uses Webpack v5.10.0 for bundling and module loading:
+The UMD distribution of vtp.js uses Webpack v5.10.0 for bundling and
+module loading:
 
     Copyright JS Foundation and other contributors
 
