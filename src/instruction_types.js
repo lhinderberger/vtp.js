@@ -21,23 +21,23 @@
 /**
  * @typedef {Object} InstIncrementTime
  * @property {String} type - Is always "IncrementTime"
- * @property {Number} timeOffset
+ * @property {Number} timeOffset - This instructions's time offset in milliseconds
  */
 
 /**
  * @typedef {Object} InstSetAmplitude
  * @property {String} type - Is always "SetAmplitude"
- * @property {Number} channelSelect
- * @property {Number} timeOffset
- * @property {Number} amplitude
+ * @property {Number} channelSelect - The channel number which this instruction is for, or 0, if it is for all channels
+ * @property {Number} timeOffset - This instructions's time offset in milliseconds
+ * @property {Number} amplitude - The amplitude to be set. Must be a value between 0 and 1023
  */
 
  /**
  * @typedef {Object} InstSetFrequency
  * @property {String} type - Is always "SetFrequency"
- * @property {Number} channelSelect
- * @property {Number} timeOffset
- * @property {Number} frequency
+ * @property {Number} channelSelect - The channel number which this instruction is for, or 0, if it is for all channels
+ * @property {Number} timeOffset - This instructions's time offset in milliseconds
+ * @property {Number} frequency - The frequency to be set. Must be a value between 0 and 1023
  */
 
 export const InstructionCode = {
