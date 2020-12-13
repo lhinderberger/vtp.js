@@ -116,10 +116,6 @@ to the console.
     ]).buffer
   }
 
-  function swapEndianness(i) {
-    return 
-  }
-
   const vtpBinaryFile = fetchVTPFile()
 
   VTP.readInstructionWords(vtpBinaryFile)

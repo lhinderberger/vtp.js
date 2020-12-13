@@ -1,5 +1,12 @@
 # Release Log of vtp.js
 
+## In Development: v?
+### Summary
+TODO
+
+### Removals
+- README.md: Removed an unnecessary function in the complex example
+
 ## v0.3.0 - 2020-12-12
 ### Summary
 This is the initial release of vtp.js.
