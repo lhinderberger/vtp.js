@@ -1,3 +1,5 @@
+**This library has been deprecated in favor of [vtproto](https://github.com/lhinderberger/vtproto)**
+
 # vtp.js
 A port of [libvtp](https://github.com/lhinderberger/libvtp) to JavaScript
 
